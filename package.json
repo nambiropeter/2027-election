@@ -1,0 +1,29 @@
+{
+  "name": "2027-election",
+  "version": "1.0.0",
+  "description": "Kenya-only election sentiment poll with one-vote-per-device and concurrency tooling.",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "db:init": "node scripts/init-db.js",
+    "load:test": "node scripts/load-test.js",
+    "security:check": "npm audit --audit-level=high",
+    "prod:validate-config": "node -e \"require('./src/config')\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@fastify/cookie": "^11.0.2",
+    "@fastify/cors": "^11.2.0",
+    "@fastify/helmet": "^13.0.2",
+    "@fastify/static": "^9.1.0",
+    "autocannon": "^8.0.0",
+    "dotenv": "^17.4.1",
+    "fastify": "^5.8.4",
+    "geoip-lite": "^1.4.10",
+    "ioredis": "^5.10.1",
+    "pg": "^8.20.0"
+  }
+}

@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2027 Kenya Election Poll</title>
+    <style>
+      :root {
+        --bg: #f7f3ea;
+        --surface: #fffdf8;
+        --text: #1f2a1f;
+        --muted: #5b6b5b;
+        --accent: #0f6b3a;
+        --accent-2: #ab2323;
+        --line: #e2d7c0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text);
+        background: radial-gradient(circle at 10% 10%, #fff5df 0%, var(--bg) 45%, #f0ead8 100%);
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+
+      .card {
+        width: min(760px, 100%);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        box-shadow: 0 20px 44px rgba(0, 0, 0, 0.08);
+        padding: 24px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        line-height: 1.2;
+      }
+
+      p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      form {
+        margin-top: 20px;
+        display: grid;
+        gap: 12px;
+      }
+
+      label {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 12px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      button {
+        margin-top: 8px;
+        border: 0;
+        border-radius: 12px;
+        padding: 12px 16px;
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+        background: linear-gradient(90deg, var(--accent), #0b4a28);
+        cursor: pointer;
+      }
+
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
+      #status {
+        margin-top: 12px;
+        font-weight: 600;
+      }
+
+      .results {
+        margin-top: 18px;
+        border-top: 1px solid var(--line);
+        padding-top: 14px;
+      }
+
+      .bar-wrap {
+        margin: 10px 0;
+      }
+
+      .bar {
+        height: 10px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      }
+
+      @media (max-width: 640px) {
+        .card {
+          padding: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="card">
+      <h1 id="question">Loading poll...</h1>
+      <p>Voting is limited to Kenya IP addresses. One vote per device.</p>
+
+      <form id="poll-form"></form>
+      <div id="status" aria-live="polite"></div>
+
+      <section class="results" id="results"></section>
+    </main>
+
+    <script>
+      const statusEl = document.getElementById("status");
+      const questionEl = document.getElementById("question");
+      const formEl = document.getElementById("poll-form");
+      const resultsEl = document.getElementById("results");
+
+      async function fetchPoll() {
+        const response = await fetch("/api/poll");
+        const data = await response.json();
+        return data;
+      }
+
+      function renderPoll(data) {
+        questionEl.textContent = data.question;
+        formEl.innerHTML = "";
+
+        data.options.forEach((option) => {
+          const label = document.createElement("label");
+          const input = document.createElement("input");
+          input.type = "radio";
+          input.name = "option";
+          input.value = String(option.id);
+          label.appendChild(input);
+          label.appendChild(document.createTextNode(option.label));
+          formEl.appendChild(label);
+        });
+
+        const button = document.createElement("button");
+        button.type = "submit";
+        button.textContent = "Submit Vote";
+        formEl.appendChild(button);
+
+        renderResults(data);
+      }
+
+      function renderResults(data) {
+        const total = data.totalVotes || 0;
+        resultsEl.innerHTML = `<strong>Total votes: ${total}</strong>`;
+
+        data.options.forEach((option) => {
+          const pct = total > 0 ? Math.round((option.votes / total) * 100) : 0;
+          const row = document.createElement("div");
+          row.className = "bar-wrap";
+          row.innerHTML = `
+            <div>${option.label}: ${option.votes} (${pct}%)</div>
+            <div class="bar" style="width:${pct}%"></div>
+          `;
+          resultsEl.appendChild(row);
+        });
+      }
+
+      formEl.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const checked = formEl.querySelector("input[name=option]:checked");
+        if (!checked) {
+          statusEl.textContent = "Choose an option first.";
+          return;
+        }
+
+        statusEl.textContent = "Submitting vote...";
+        const submitButton = formEl.querySelector("button");
+        submitButton.disabled = true;
+
+        try {
+          const response = await fetch("/api/vote", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ optionId: Number(checked.value) }),
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            statusEl.textContent = data.error || "Failed to submit vote.";
+          } else {
+            statusEl.textContent = "Vote submitted successfully.";
+          }
+
+          const poll = await fetchPoll();
+          renderResults(poll);
+        } catch (_) {
+          statusEl.textContent = "Network error. Try again.";
+        } finally {
+          submitButton.disabled = false;
+        }
+      });
+
+      fetchPoll()
+        .then(renderPoll)
+        .catch(() => {
+          questionEl.textContent = "Failed to load poll.";
+          statusEl.textContent = "Check server logs and try again.";
+        });
+    </script>
+  </body>
+</html>
