@@ -90,6 +90,47 @@ Invoke-WebRequest http://localhost:3000/health
 docker compose ps
 ```
 
+## Deploying on Vercel + Supabase (recommended)
+
+Use this path if you want managed hosting with low ops overhead.
+
+1. Create Supabase project and run schema:
+
+```sql
+-- In Supabase SQL Editor
+-- paste and run sql/schema.sql
+```
+
+2. Create Upstash Redis and copy TLS URL:
+
+```text
+rediss://default:<token>@<host>:6379
+```
+
+3. Import this repo into Vercel and set environment variables (Production):
+
+- `NODE_ENV=production`
+- `DATABASE_URL=<Supabase pooled Postgres URL>`
+- `REDIS_URL=<Upstash rediss URL>`
+- `REDIS_TLS=true`
+- `DEVICE_SALT=<64+ random hex chars>`
+- `SESSION_SECRET=<64+ random hex chars>`
+- `ALLOWED_ORIGINS=https://kpolls.me,https://www.kpolls.me`
+- `SESSION_COOKIE_SECURE=true`
+- `TRUST_PROXY=true`
+- `BYPASS_GEO_CHECK=false`
+- `ALLOW_LOCALHOST=false`
+
+4. Add domains in Vercel (`kpolls.me`, `www.kpolls.me`) and update DNS to Vercel.
+
+5. Deploy and verify:
+
+```text
+https://kpolls.me/health
+```
+
+For a full go-live list, follow [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md).
+
 ## Launch Live On A VPS (Ubuntu + HTTPS)
 
 Use this when you want a public URL with SSL.

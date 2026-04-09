@@ -261,7 +261,7 @@ async function ensureSchema() {
 
   await query(`
     INSERT INTO polls (question, is_active)
-    SELECT 'What is your general feeling about the 2027 elections in Kenya?', TRUE
+    SELECT 'With Chief Justice (Rtd) David Maraga joining the race, which candidate do you believe has the right vision to lead Kenya in 2027?', TRUE
     WHERE NOT EXISTS (SELECT 1 FROM polls WHERE is_active = TRUE);
   `);
 
@@ -279,10 +279,13 @@ async function ensureSchema() {
       INSERT INTO poll_options (poll_id, label, sort_order)
       SELECT $1, v.label, v.sort_order
       FROM (VALUES
-        ('Very positive', 1),
-        ('Neutral', 2),
-        ('Concerned', 3),
-        ('Very concerned', 4)
+        ('William Ruto - UDA (Kenya Kwanza): The Incumbent; Bottom-Up Transformation.', 1),
+        ('Kalonzo Musyoka - Wiper (Azimio): The Diplomat; focus on stability and unity.', 2),
+        ('David Maraga - United Green Movement: The Jurist; focus on integrity and the rule of law.', 3),
+        ('Fred Matiang''i - Jubilee Party: The Reformer; focus on efficient service delivery.', 4),
+        ('Okiya Omtatah - NRA: The Defender; focus on constitutionalism and the common man.', 5),
+        ('Rigathi Gachagua - TBD: The Regional Voice; strong focus on Mt. Kenya interests.', 6),
+        ('Undecided - Still weighing the impact of these new entries.', 7)
       ) AS v(label, sort_order)
       WHERE NOT EXISTS (SELECT 1 FROM poll_options WHERE poll_id = $1)
     `,
@@ -510,27 +513,41 @@ async function start() {
   server.log.info(`Server running on port ${config.port}`);
 }
 
-start().catch(async (error) => {
-  server.log.error(error);
+async function shutdown() {
   try {
-    await closePool();
-    redis.disconnect();
+    await server.close();
   } catch (_) {
-    // Ignore shutdown cleanup errors.
+    // Ignore close errors during shutdown.
   }
-  process.exit(1);
-});
-
-process.on("SIGINT", async () => {
-  await server.close();
   await closePool();
   redis.disconnect();
-  process.exit(0);
-});
+}
 
-process.on("SIGTERM", async () => {
-  await server.close();
-  await closePool();
-  redis.disconnect();
-  process.exit(0);
-});
+if (require.main === module) {
+  start().catch(async (error) => {
+    server.log.error(error);
+    try {
+      await shutdown();
+    } catch (_) {
+      // Ignore shutdown cleanup errors.
+    }
+    process.exit(1);
+  });
+
+  process.on("SIGINT", async () => {
+    await shutdown();
+    process.exit(0);
+  });
+
+  process.on("SIGTERM", async () => {
+    await shutdown();
+    process.exit(0);
+  });
+}
+
+module.exports = {
+  server,
+  ensureSchema,
+  start,
+  shutdown,
+};
