@@ -126,8 +126,8 @@ cp .env.example .env
 
 Then edit `.env` and set all secure values, especially:
 
-- `DOMAIN_NAME` (for example: `poll.yourdomain.com`)
-- `ALLOWED_ORIGINS=https://your-domain`
+- `DOMAIN_NAME` (for example: `kpolls.me`)
+- `ALLOWED_ORIGINS=https://kpolls.me,https://www.kpolls.me`
 - strong random values for `DEVICE_SALT`, `SESSION_SECRET`, `POSTGRES_PASSWORD`, `REDIS_PASSWORD`
 - keep `BYPASS_GEO_CHECK=false`, `ALLOW_LOCALHOST=false`, `SESSION_COOKIE_SECURE=true`
 
@@ -141,7 +141,7 @@ sudo docker compose -f docker-compose.prod.yml up --build -d
 
 ```bash
 sudo docker compose -f docker-compose.prod.yml ps
-curl -I https://your-domain/health
+curl -I https://kpolls.me/health
 ```
 
 Notes:
