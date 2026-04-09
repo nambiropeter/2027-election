@@ -90,6 +90,66 @@ Invoke-WebRequest http://localhost:3000/health
 docker compose ps
 ```
 
+## Launch Live On A VPS (Ubuntu + HTTPS)
+
+Use this when you want a public URL with SSL.
+
+1. Provision an Ubuntu VPS and point your domain A record to the server IP.
+
+2. SSH into the server and install Docker + Compose plugin:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo $VERSION_CODENAME) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin git
+```
+
+3. Clone your repo and enter it:
+
+```bash
+git clone https://github.com/nambiropeter/2027-election.git
+cd 2027-election
+```
+
+4. Create production env values:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` and set all secure values, especially:
+
+- `DOMAIN_NAME` (for example: `poll.yourdomain.com`)
+- `ALLOWED_ORIGINS=https://your-domain`
+- strong random values for `DEVICE_SALT`, `SESSION_SECRET`, `POSTGRES_PASSWORD`, `REDIS_PASSWORD`
+- keep `BYPASS_GEO_CHECK=false`, `ALLOW_LOCALHOST=false`, `SESSION_COOKIE_SECURE=true`
+
+5. Start the production stack (Caddy + app + Postgres + Redis):
+
+```bash
+sudo docker compose -f docker-compose.prod.yml up --build -d
+```
+
+6. Verify deployment:
+
+```bash
+sudo docker compose -f docker-compose.prod.yml ps
+curl -I https://your-domain/health
+```
+
+Notes:
+
+- `docker-compose.prod.yml` uses Caddy for automatic HTTPS certificates.
+- Keep ports `80/443` open on your VPS firewall; do not expose Postgres/Redis.
+- App schema auto-initializes on startup.
+
 ## One-command container deployment
 
 After creating `.env`, bring up app + PostgreSQL + Redis together:
