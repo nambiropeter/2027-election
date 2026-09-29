@@ -30,6 +30,26 @@ they are not an electoral roll. The fan-out cap is deliberately generous
 (25 by default) because Kenyan mobile networks put very many genuine voters
 behind one CGNAT address range, and a tight cap would lock out real people.
 
+## Live deployment
+
+| Piece | Where |
+|---|---|
+| Frontend | Vercel project `2027-election`, production branch `main` |
+| Backend | Supabase project `kpolls-2027` (`lhjdwjwgttxzbyhooenp`), eu-west-1 |
+| Poll API | `https://lhjdwjwgttxzbyhooenp.supabase.co/functions/v1/poll` |
+| Vote API | `https://lhjdwjwgttxzbyhooenp.supabase.co/functions/v1/vote` |
+| Domain | kpolls.me (registrar: Namecheap) |
+
+`public/assets/config.js` points the page at that Supabase project.
+`supabaseAnonKey` is intentionally empty: both functions are deployed without
+JWT verification, and an anonymous request returns 200 with no apikey header.
+
+Pushing to `main` redeploys the frontend. Changing anything under
+`supabase/functions/` does **not** auto-deploy - redeploy those with
+`supabase functions deploy poll --no-verify-jwt` (and the same for `vote`), or
+paste the code in the dashboard's function editor.
+
+
 ## Architecture
 
 The page talks to **one** backend, selected by `apiBase` in
