@@ -2,12 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kenya 2027 Presidential Preference Poll</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kenya 2027 Presidential Preference Poll | KPolls Kenya</title>
     <meta
       name="description"
-      content="Public opinion poll on Kenya's 2027 presidential preference. One vote per device, Kenya-focused participation, and transparent live totals."
+      content="Vote once and watch live totals in Kenya's 2027 presidential preference poll. One vote per device, Kenya-focused participation, transparent results."
     />
+    <meta name="theme-color" content="#0f7a42" />
     <meta name="robots" content="index,follow" />
     <meta property="og:title" content="Kenya 2027 Presidential Preference Poll" />
     <meta
@@ -18,427 +19,139 @@
     <meta property="og:url" content="https://kpolls.me/" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="https://kpolls.me/" />
-    <style>
-      :root {
-        --bg: #f7f3ea;
-        --surface: #fffdf8;
-        --text: #1f2a1f;
-        --muted: #5b6b5b;
-        --accent: #0f6b3a;
-        --accent-2: #ab2323;
-        --line: #e2d7c0;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 0;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        color: var(--text);
-        background: radial-gradient(circle at 10% 10%, #fff5df 0%, var(--bg) 45%, #f0ead8 100%);
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-        padding: 24px;
-      }
-
-      .card {
-        width: min(760px, 100%);
-        background: var(--surface);
-        border: 1px solid var(--line);
-        border-radius: 20px;
-        box-shadow: 0 20px 44px rgba(0, 0, 0, 0.08);
-        padding: 24px;
-      }
-
-      .masthead {
-        display: flex;
-        justify-content: space-between;
-        gap: 12px;
-        align-items: center;
-        margin-bottom: 8px;
-      }
-
-      .site-name {
-        margin: 0;
-        font-size: 14px;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--muted);
-      }
-
-      .meta-links {
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
-
-      .meta-links a {
-        color: var(--accent);
-        text-decoration: none;
-        font-size: 14px;
-      }
-
-      .meta-links a:hover {
-        text-decoration: underline;
-      }
-
-      h1 {
-        margin: 0 0 12px;
-        line-height: 1.2;
-      }
-
-      p {
-        margin: 0;
-        color: var(--muted);
-      }
-
-      form {
-        margin-top: 20px;
-        display: grid;
-        gap: 12px;
-      }
-
-      label {
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        padding: 12px;
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        cursor: pointer;
-      }
-
-      button {
-        margin-top: 8px;
-        border: 0;
-        border-radius: 12px;
-        padding: 12px 16px;
-        font-size: 16px;
-        font-weight: 600;
-        color: white;
-        background: linear-gradient(90deg, var(--accent), #0b4a28);
-        cursor: pointer;
-      }
-
-      button:disabled {
-        opacity: 0.55;
-        cursor: not-allowed;
-      }
-
-      #status {
-        margin-top: 12px;
-        font-weight: 600;
-      }
-
-      .results {
-        margin-top: 18px;
-        border-top: 1px solid var(--line);
-        padding-top: 14px;
-      }
-
-      .ad-slot {
-        margin-top: 18px;
-        border: 1px dashed var(--line);
-        border-radius: 12px;
-        padding: 10px;
-        background: #fff7e8;
-      }
-
-      .ad-note {
-        margin: 0 0 8px;
-        font-size: 13px;
-        color: var(--muted);
-      }
-
-      .consent-banner {
-        position: fixed;
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
-        z-index: 20;
-        background: #102117;
-        color: #f4f8f4;
-        border-radius: 12px;
-        padding: 12px;
-        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
-      }
-
-      .consent-banner p {
-        margin: 0;
-        color: #f4f8f4;
-        font-size: 14px;
-      }
-
-      .consent-actions {
-        margin-top: 10px;
-        display: flex;
-        gap: 8px;
-      }
-
-      .consent-actions button {
-        margin-top: 0;
-        padding: 10px 12px;
-        font-size: 14px;
-      }
-
-      .consent-actions .secondary {
-        background: #314635;
-      }
-
-      .sr-only {
-        border: 0;
-        clip: rect(0, 0, 0, 0);
-        height: 1px;
-        margin: -1px;
-        overflow: hidden;
-        padding: 0;
-        position: absolute;
-        width: 1px;
-        white-space: nowrap;
-      }
-
-      .bar-wrap {
-        margin: 10px 0;
-      }
-
-      .bar {
-        height: 10px;
-        border-radius: 999px;
-        background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      }
-
-      @media (max-width: 640px) {
-        .card {
-          padding: 16px;
-        }
-      }
-    </style>
+    <link rel="stylesheet" href="/assets/styles.css" />
   </head>
   <body>
-    <main class="card">
-      <div class="masthead">
-        <p class="site-name">KPolls Kenya</p>
-        <nav class="meta-links" aria-label="Site information">
+    <div class="shell">
+      <header class="masthead">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">K</span>
+          <span class="brand-text">
+            KPolls
+            <span>Kenya</span>
+          </span>
+        </a>
+        <nav aria-label="Site">
           <a href="/about.html">About</a>
           <a href="/privacy.html">Privacy</a>
           <a href="/terms.html">Terms</a>
           <a href="/contact.html">Contact</a>
+          <button
+            class="theme-toggle"
+            id="theme-toggle"
+            type="button"
+            aria-label="Toggle dark mode"
+          >
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </svg>
+          </button>
         </nav>
-      </div>
-      <h1 id="question">Loading poll...</h1>
-      <p>Voting is limited to Kenya IP addresses. One vote per device.</p>
+      </header>
 
-      <form id="poll-form"></form>
-      <div id="status" aria-live="polite"></div>
+      <main class="card">
+        <p class="eyebrow"><span class="live-dot"></span> Live national poll</p>
+        <h1 id="question">Loading the poll&hellip;</h1>
+        <p class="subhead">
+          An independent public sentiment poll. Results update in real time as votes come in.
+        </p>
 
-      <section class="results" id="results"></section>
+        <div class="trust-row">
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            One vote per device
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z" />
+            </svg>
+            Kenya only
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            Anonymous
+          </span>
+        </div>
 
-      <section class="ad-slot" aria-label="Sponsored content">
+        <div id="skeleton" aria-hidden="true" style="margin-top: 20px">
+          <div class="skeleton skeleton-line" style="width: 34%"></div>
+          <div class="skeleton skeleton-option"></div>
+          <div class="skeleton skeleton-option"></div>
+          <div class="skeleton skeleton-option"></div>
+        </div>
+
+        <form id="poll-form" novalidate>
+          <div id="ballot-wrap" hidden style="margin-top: 20px">
+            <fieldset class="ballot">
+              <legend>Choose one candidate</legend>
+              <div class="options" id="options" role="radiogroup" aria-label="Candidates"></div>
+            </fieldset>
+            <button class="btn btn-primary" id="submit" type="submit" disabled>
+              Submit my vote
+            </button>
+          </div>
+        </form>
+
+        <div class="alert" id="alert" hidden></div>
+
+        <section id="results" hidden style="margin-top: 22px">
+          <div class="results-head">
+            <h2 class="results-title">Live results</h2>
+            <p class="total" id="total"></p>
+          </div>
+          <div class="bars" id="bars"></div>
+          <div class="results-foot">
+            <span id="updated"></span>
+            <button class="btn btn-quiet" id="refresh" type="button">Refresh</button>
+          </div>
+        </section>
+      </main>
+
+      <section class="ad-slot" id="ad-slot" aria-label="Sponsored content" hidden>
         <p class="ad-note">Sponsored</p>
         <ins
           class="adsbygoogle"
-          style="display:block"
+          style="display: block"
           data-ad-format="auto"
           data-full-width-responsive="true"
         ></ins>
       </section>
-    </main>
 
-    <section class="consent-banner" id="consent-banner" hidden>
+      <footer class="page-footer">
+        <p>
+          KPolls Kenya is an independent civic sentiment poll and is not an official
+          election instrument.<br />
+          <a href="/about.html">About</a> &middot;
+          <a href="/privacy.html">Privacy</a> &middot;
+          <a href="/terms.html">Terms</a> &middot;
+          <a href="/contact.html">Contact</a>
+        </p>
+      </footer>
+    </div>
+
+    <section class="consent" id="consent" role="dialog" aria-label="Cookie preferences" hidden>
       <p>
-        We use cookies to protect voting integrity and, if you allow, to show advertising. You can
-        manage your preference at any time.
+        We use a strictly necessary cookie to keep voting fair. With your permission we
+        also show advertising to keep the poll free.
       </p>
       <div class="consent-actions">
-        <button id="consent-accept" type="button">Allow Ads</button>
-        <button id="consent-decline" type="button" class="secondary">Reject Ads</button>
+        <button class="btn btn-primary" id="consent-accept" type="button">Allow ads</button>
+        <button class="btn btn-quiet" id="consent-decline" type="button">Reject ads</button>
       </div>
     </section>
 
-    <script>
-      const ADSENSE_CLIENT = "ca-pub-REPLACE_WITH_YOUR_ADSENSE_ID";
-      const CONSENT_KEY = "ad_consent_choice";
-      const DEVICE_ID_KEY = "poll_device_id";
-      const EXTERNAL_API_BASE = "https://ktvigfosgqrvfpnrnifb.supabase.co/functions/v1";
-
-      const statusEl = document.getElementById("status");
-      const questionEl = document.getElementById("question");
-      const formEl = document.getElementById("poll-form");
-      const resultsEl = document.getElementById("results");
-      const consentBannerEl = document.getElementById("consent-banner");
-      const consentAcceptEl = document.getElementById("consent-accept");
-      const consentDeclineEl = document.getElementById("consent-decline");
-
-      function getApiBase() {
-        return EXTERNAL_API_BASE;
-      }
-
-      function getDeviceId() {
-        const existing = localStorage.getItem(DEVICE_ID_KEY);
-        if (existing) {
-          return existing;
-        }
-
-        const id = `${Date.now()}-${Math.random().toString(36).slice(2, 12)}`;
-        localStorage.setItem(DEVICE_ID_KEY, id);
-        return id;
-      }
-
-      function shouldEnableAdSenseClient() {
-        return ADSENSE_CLIENT && !ADSENSE_CLIENT.includes("REPLACE_WITH_YOUR_ADSENSE_ID");
-      }
-
-      function loadAdSense(consentValue) {
-        if (!shouldEnableAdSenseClient()) {
-          return;
-        }
-
-        if (consentValue === "denied") {
-          window.adsbygoogle = window.adsbygoogle || [];
-          window.adsbygoogle.requestNonPersonalizedAds = 1;
-        }
-
-        const existingScript = document.querySelector("script[data-adsense-loader='true']");
-        if (!existingScript) {
-          const script = document.createElement("script");
-          script.async = true;
-          script.crossOrigin = "anonymous";
-          script.setAttribute("data-adsense-loader", "true");
-          script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
-          document.head.appendChild(script);
-        }
-
-        document.querySelectorAll(".adsbygoogle").forEach((slot) => {
-          slot.setAttribute("data-ad-client", ADSENSE_CLIENT);
-          if (!slot.getAttribute("data-ad-slot")) {
-            slot.setAttribute("data-ad-slot", "REPLACE_WITH_AD_SLOT_ID");
-          }
-          try {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-          } catch (_) {
-            // Ignore pushes before library settles.
-          }
-        });
-      }
-
-      function hideConsentBanner() {
-        consentBannerEl.hidden = true;
-      }
-
-      function setAdConsent(choice) {
-        localStorage.setItem(CONSENT_KEY, choice);
-        hideConsentBanner();
-        loadAdSense(choice);
-      }
-
-      function initializeConsentUI() {
-        const savedConsent = localStorage.getItem(CONSENT_KEY);
-        if (savedConsent === "granted" || savedConsent === "denied") {
-          loadAdSense(savedConsent);
-          return;
-        }
-
-        consentBannerEl.hidden = false;
-      }
-
-      consentAcceptEl.addEventListener("click", () => setAdConsent("granted"));
-      consentDeclineEl.addEventListener("click", () => setAdConsent("denied"));
-
-      async function fetchPoll() {
-        const base = getApiBase();
-        const response = await fetch(`${base}/poll`);
-        const data = await response.json();
-        return data;
-      }
-
-      function renderPoll(data) {
-        questionEl.textContent = data.question;
-        formEl.innerHTML = "";
-
-        data.options.forEach((option) => {
-          const label = document.createElement("label");
-          const input = document.createElement("input");
-          input.type = "radio";
-          input.name = "option";
-          input.value = String(option.id);
-          label.appendChild(input);
-          label.appendChild(document.createTextNode(option.label));
-          formEl.appendChild(label);
-        });
-
-        const button = document.createElement("button");
-        button.type = "submit";
-        button.textContent = "Submit Vote";
-        formEl.appendChild(button);
-
-        renderResults(data);
-      }
-
-      function renderResults(data) {
-        const total = data.totalVotes || 0;
-        resultsEl.innerHTML = `<strong>Total votes: ${total}</strong>`;
-
-        data.options.forEach((option) => {
-          const pct = total > 0 ? Math.round((option.votes / total) * 100) : 0;
-          const row = document.createElement("div");
-          row.className = "bar-wrap";
-          row.innerHTML = `
-            <div>${option.label}: ${option.votes} (${pct}%)</div>
-            <div class="bar" style="width:${pct}%"></div>
-          `;
-          resultsEl.appendChild(row);
-        });
-      }
-
-      formEl.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const checked = formEl.querySelector("input[name=option]:checked");
-        if (!checked) {
-          statusEl.textContent = "Choose an option first.";
-          return;
-        }
-
-        statusEl.textContent = "Submitting vote...";
-        const submitButton = formEl.querySelector("button");
-        submitButton.disabled = true;
-
-        try {
-          const response = await fetch("/api/vote", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ optionId: Number(checked.value), deviceId: getDeviceId() }),
-          });
-
-          const data = await response.json();
-          if (!response.ok) {
-            statusEl.textContent = data.error || "Failed to submit vote.";
-          } else {
-            statusEl.textContent = "Vote submitted successfully.";
-          }
-
-          const poll = await fetchPoll();
-          renderResults(poll);
-        } catch (_) {
-          statusEl.textContent = "Network error. Try again.";
-        } finally {
-          submitButton.disabled = false;
-        }
-      });
-
-      fetchPoll()
-        .then(renderPoll)
-        .catch(() => {
-          questionEl.textContent = "Failed to load poll.";
-          statusEl.textContent = "Check server logs and try again.";
-        });
-
-      initializeConsentUI();
-    </script>
+    <script src="/assets/config.js"></script>
+    <script src="/assets/app.js"></script>
 
     <script type="application/ld+json">
       {
@@ -447,10 +160,7 @@
         "name": "KPolls Kenya",
         "url": "https://kpolls.me/",
         "description": "Kenya 2027 presidential preference polling platform with live totals.",
-        "publisher": {
-          "@type": "Organization",
-          "name": "KPolls Kenya"
-        }
+        "publisher": { "@type": "Organization", "name": "KPolls Kenya" }
       }
     </script>
   </body>

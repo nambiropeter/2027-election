@@ -40,7 +40,8 @@ FROM (VALUES
   ('Fred Matiang''i - Jubilee Party: The Reformer; focus on efficient service delivery.', 4),
   ('Okiya Omtatah - NRA: The Defender; focus on constitutionalism and the common man.', 5),
   ('Rigathi Gachagua - TBD: The Regional Voice; strong focus on Mt. Kenya interests.', 6),
-  ('Undecided - Still weighing the impact of these new entries.', 7)
+  ('Edwin Sifuna - ODM: The Firebrand; focus on party loyalty and accountability.', 7),
+  ('Undecided - Still weighing the impact of these new entries.', 99)
 ) AS v(label, sort_order)
 CROSS JOIN polls p
 WHERE p.is_active = TRUE

@@ -48,6 +48,21 @@ function isLikelyWeakSecret(secret) {
   );
 }
 
+function getGeoEnforcement() {
+  // BYPASS_GEO_CHECK is the older switch; keep honouring it so existing .env
+  // files do not silently change behaviour.
+  if (getBoolean("BYPASS_GEO_CHECK", false)) {
+    return "off";
+  }
+
+  const rawValue = String(process.env.GEO_ENFORCEMENT || "").trim().toLowerCase();
+  if (rawValue === "strict" || rawValue === "lenient" || rawValue === "off") {
+    return rawValue;
+  }
+
+  return "lenient";
+}
+
 function getSessionCookieSameSite() {
   const rawValue = String(process.env.SESSION_COOKIE_SAME_SITE || "").trim().toLowerCase();
   if (rawValue === "lax" || rawValue === "strict" || rawValue === "none") {
@@ -71,9 +86,11 @@ const config = {
   sessionCookieSecure: getBoolean("SESSION_COOKIE_SECURE", isProduction),
   sessionCookieSameSite: getSessionCookieSameSite(),
   trustProxy: getBoolean("TRUST_PROXY", false),
-  bypassGeoCheck: getBoolean("BYPASS_GEO_CHECK", false),
+  geoEnforcement: getGeoEnforcement(),
   allowLocalhost: getBoolean("ALLOW_LOCALHOST", !isProduction),
   allowedCountryCode: (process.env.ALLOWED_COUNTRY_CODE || "KE").toUpperCase(),
+  maxVotesPerFingerprint: getNumber("MAX_VOTES_PER_FINGERPRINT", 25),
+  tokenTtlHours: getNumber("TOKEN_TTL_HOURS", 24 * 365),
   allowedOrigins: parseAllowedOrigins(process.env.ALLOWED_ORIGINS),
   votePerIpPerMinute: getNumber("VOTE_PER_IP_PER_MINUTE", 20),
   votePerIpPerHour: getNumber("VOTE_PER_IP_PER_HOUR", 200),
@@ -120,8 +137,8 @@ function validateConfig(currentConfig) {
     throw new Error("ALLOW_LOCALHOST must be false in production");
   }
 
-  if (currentConfig.bypassGeoCheck) {
-    throw new Error("BYPASS_GEO_CHECK must be false in production");
+  if (currentConfig.geoEnforcement === "off") {
+    throw new Error("GEO_ENFORCEMENT must not be 'off' in production");
   }
 
   if (currentConfig.allowedOrigins.length === 0) {

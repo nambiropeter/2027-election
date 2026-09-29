@@ -1,3 +1,6 @@
+// Minimal ambient declarations so the functions typecheck in a plain Node/TS
+// editor. The Deno runtime supplies the real definitions at deploy time.
+
 declare namespace Deno {
   const env: {
     get(key: string): string | undefined;

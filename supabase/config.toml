@@ -361,6 +361,17 @@ authorization_url_path = "/oauth/consent"
 # Allow dynamic client registration
 allow_dynamic_registration = false
 
+# These two endpoints are called straight from the public poll page, which has
+# no signed-in user and therefore no JWT. Leaving verify_jwt at its default of
+# true makes every browser request fail with "401 Invalid JWT".
+# Authorisation is enforced inside the functions instead: origin allow-list,
+# HMAC-signed voter tokens, per-IP rate limits, and RLS on every table.
+[functions.poll]
+verify_jwt = false
+
+[functions.vote]
+verify_jwt = false
+
 [edge_runtime]
 enabled = true
 # Supported request policies: `oneshot`, `per_worker`.
