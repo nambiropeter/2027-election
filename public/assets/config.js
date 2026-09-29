@@ -14,7 +14,7 @@
  * Supabase when the page is on static hosting (Vercel) with no API alongside.
  */
 window.KPOLLS_CONFIG = {
-  apiBase: "",
+  apiBase: "https://lhjdwjwgttxzbyhooenp.supabase.co/functions/v1",
 
   // Supabase rejects anonymous calls to a project unless the publishable anon
   // key is present. Safe to ship - it is a public key, and every table is
