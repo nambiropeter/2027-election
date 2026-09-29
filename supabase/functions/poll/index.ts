@@ -3,6 +3,7 @@
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import {
   browserSignature,
+  corsHeaders,
   env,
   envInt,
   getCountry,
@@ -21,21 +22,9 @@ Deno.serve(async (request: Request) => {
   const origin = resolveOrigin(request);
 
   if (request.method === "OPTIONS") {
-    return new Response(null, {
-      status: 204,
-      headers: {
-        ...(origin
-          ? {
-            "access-control-allow-origin": origin,
-            "access-control-allow-methods": "GET,POST,OPTIONS",
-            "access-control-allow-headers":
-              `content-type,authorization,apikey,x-client-info,${TOKEN_HEADER}`,
-            "access-control-max-age": "86400",
-            "vary": "Origin",
-          }
-          : {}),
-      },
-    });
+    // Same header set as the real response, so the preflight cannot disagree
+    // with it (a missing allow-credentials here fails the request silently).
+    return new Response(null, { status: 204, headers: corsHeaders(origin) });
   }
 
   if (isOriginRejected(request)) {

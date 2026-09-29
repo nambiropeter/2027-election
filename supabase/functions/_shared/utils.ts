@@ -73,6 +73,12 @@ export function corsHeaders(origin: string | null): Record<string, string> {
   if (!origin) return {};
   return {
     "access-control-allow-origin": origin,
+    // The page fetches with credentials:"include" so the same-origin Node
+    // deployment can carry its session cookie. A browser discards any
+    // cross-origin response to such a request unless this header is present,
+    // which surfaces as a bare "TypeError: Failed to fetch". Safe here because
+    // the origin above is always a single allow-listed host, never "*".
+    "access-control-allow-credentials": "true",
     "access-control-allow-methods": "GET,POST,OPTIONS",
     "access-control-allow-headers": `content-type,authorization,apikey,x-client-info,${TOKEN_HEADER}`,
     "access-control-expose-headers": TOKEN_HEADER,
