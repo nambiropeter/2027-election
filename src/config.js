@@ -82,7 +82,6 @@ const config = {
   deviceSalt: process.env.DEVICE_SALT || "",
   sessionSecret: process.env.SESSION_SECRET || process.env.DEVICE_SALT || "",
   sessionCookieName: process.env.SESSION_COOKIE_NAME || "poll_session",
-  sessionTtlHours: getNumber("SESSION_TTL_HOURS", 24 * 30),
   sessionCookieSecure: getBoolean("SESSION_COOKIE_SECURE", isProduction),
   sessionCookieSameSite: getSessionCookieSameSite(),
   trustProxy: getBoolean("TRUST_PROXY", false),
@@ -94,8 +93,6 @@ const config = {
   allowedOrigins: parseAllowedOrigins(process.env.ALLOWED_ORIGINS),
   votePerIpPerMinute: getNumber("VOTE_PER_IP_PER_MINUTE", 20),
   votePerIpPerHour: getNumber("VOTE_PER_IP_PER_HOUR", 200),
-  anomalyBlockedGeoThresholdPerMinute: getNumber("ANOMALY_BLOCKED_GEO_THRESHOLD_PER_MINUTE", 30),
-  anomalyUniqueDevicesPerIpPerMinute: getNumber("ANOMALY_UNIQUE_DEVICES_PER_IP_PER_MINUTE", 60),
   anomalyAlertCooldownSeconds: getNumber("ANOMALY_ALERT_COOLDOWN_SECONDS", 300),
   alertWebhookUrl: process.env.ALERT_WEBHOOK_URL || "",
 };
